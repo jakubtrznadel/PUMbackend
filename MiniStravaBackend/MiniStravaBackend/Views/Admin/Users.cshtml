@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MiniStravaBackend.Models.User>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Panel Admina - Użytkownicy</title>
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Panel Admina</div>
+            <nav>
+                <ul>
+                    <li><a href="/admin">🏠 Dashboard</a></li>
+                    <li><a href="/admin/users">👥 Użytkownicy</a></li>
+                    <li><a href="/admin/activities">🏃‍♂️ Aktywności</a></li>
+                </ul>
+            </nav>
+            <form method="post" action="/logout" class="logout-form">
+                <button type="submit" class="logout-button">Wyloguj</button>
+            </form>
+        </aside>
+
+        <!-- DASHBOARD -->
+        <main class="dashboard-container">
+            <header>
+                <h1>Użytkownicy</h1>
+                <a href="/admin" class="back-button">← Powrót</a>
+            </header>
+
+            <div class="activities-grid">
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var u in Model)
+                    {
+                        <div class="activity-card">
+                            <h3>@u.FirstName (@u.Email)</h3>
+                            <p><strong>ID:</strong> @u.UserId</p>
+                            <p><strong>Email:</strong> @u.Email</p>
+                            <p><strong>Data rejestracji:</strong> @u.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>
+                            <form method="post" action="/admin/users/delete/@u.UserId" style="margin-top: 10px;" onsubmit="return confirm('Usunąć użytkownika? To usunie też jego aktywności!');">
+                                <button type="submit" class="delete-btn">Usuń użytkownika</button>
+                            </form>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p style="text-align: center; color: #666; font-style: italic;">Brak użytkowników pasujących do filtrów. Spróbuj inne kryteria wyszukiwania.</p>
+                }
+            </div>
+        </main>
+    </div>
+</body>
+</html>

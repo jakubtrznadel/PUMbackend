@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MiniStrava - Panel Admina</title>
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div>
+                <div class="sidebar-title">MiniStrava</div>
+                <nav>
+                    <ul>
+                        <li><a href="/admin">🏠 Dashboard</a></li>
+                        <li><a href="/admin/users">👥 Użytkownicy</a></li>
+                        <li><a href="/admin/activities">🏃‍♂️ Aktywności</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <form method="post" action="/logout" class="logout-form">
+                <button type="submit" class="logout-button">Wyloguj</button>
+            </form>
+        </aside>
+
+        <main class="dashboard-container">
+            <header>
+                <h1>Witaj, @User.Identity.Name!</h1>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card clickable" onclick="location.href='/admin/users'">
+                    <h3>Użytkownicy</h3>
+                    <p>@ViewBag.UserCount</p>
+                </div>
+                <div class="stat-card clickable" onclick="location.href='/admin/activities'">
+                    <h3>Aktywności</h3>
+                    <p>@ViewBag.ActivityCount</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Łączny dystans</h3>
+                    <p>@ViewBag.TotalDistance km</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

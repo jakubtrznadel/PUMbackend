@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MiniStrava.Controllers.AdminActivityViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Panel Admina - Aktywności</title>
+    <link rel="stylesheet" href="~/css/admin-activity.css" />
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-title">Panel Admina</div>
+            <nav>
+                <ul>
+                    <li><a href="/admin">🏠 Dashboard</a></li>
+                    <li><a href="/admin/users">👥 Użytkownicy</a></li>
+                    <li><a href="/admin/activities">🏃‍♂️ Aktywności</a></li>
+                </ul>
+            </nav>
+            <form method="post" action="/logout" class="logout-form">
+                <button type="submit" class="logout-button">Wyloguj</button>
+            </form>
+        </aside>
+
+        <main class="dashboard-container">
+            <header>
+                <h1>Aktywności użytkowników</h1>
+                <a href="/admin" class="back-button">← Powrót</a>
+            </header>
+
+            <form method="get" class="filter-form">
+                <input type="text" name="email" placeholder="Email użytkownika" />
+                <input type="text" name="type" placeholder="Typ aktywności" />
+                <input type="date" name="date" placeholder="Data stworzenia" />
+                <input type="number" step="0.1" name="minDistance" placeholder="Min dystans (km)" />
+                <input type="number" step="0.1" name="maxDistance" placeholder="Max dystans (km)" />
+                <button type="submit">Filtruj i wyszukaj</button>
+            </form>
+
+            <div class="activities-grid">
+                @if (Model.Any())
+                {
+                    @foreach (var a in Model)
+                    {
+                        <div class="activity-card">
+                            <h3>@a.Name (@a.Type)</h3>
+                            <p><strong>ID:</strong> @a.ActivityId</p>
+                            <p><strong>Użytkownik:</strong> @a.UserEmail</p>
+                            <p><strong>Dystans:</strong> @a.Distance km</p>
+                            @{
+                                var totalSeconds = (int)a.Duration;
+                                var minutes = totalSeconds / 60;
+                                var seconds = totalSeconds % 60;
+                            }
+                            <p><strong>Czas:</strong> @minutes min @seconds sek</p>
+                            <p><strong>Data:</strong> @a.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>
+                            <form method="post" action="/admin/activities/delete/@a.ActivityId" style="margin-top: 10px;" onsubmit="return confirm('Usunąć aktywność?');">
+                                <button type="submit" class="delete-btn">Usuń</button>
+                            </form>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p style="text-align: center; color: #666; font-style: italic;">Brak aktywności pasujących do filtrów. Spróbuj inne kryteria wyszukiwania.</p>
+                }
+            </div>
+        </main>
+    </div>
+</body>
+</html>

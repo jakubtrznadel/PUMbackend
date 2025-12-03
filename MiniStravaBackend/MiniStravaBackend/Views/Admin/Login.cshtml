@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MiniStrava Admin</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+
+<body>
+    <div class="login-container">
+        <h2>MiniStrava Admin</h2>
+        <form method="post" action="/admin/login">
+            <div class="form-group">
+                <label>Nazwa użytkownika</label>
+                <input type="text" name="username" value="@ViewBag.Username" readonly />
+
+
+            </div>
+
+            <div class="form-group">
+                <label>Hasło</label>
+                <input type="password" name="password" required />
+            </div>
+
+            <button type="submit">Zaloguj się</button>
+
+            @if (ViewBag.Error != null)
+            {
+                <p class="error">@ViewBag.Error</p>
+            }
+
+            @if (ViewBag.Message != null)
+            {
+                <p class="success">@ViewBag.Message</p>
+            }
+        </form>
+    </div>
+</body>
+</html>
